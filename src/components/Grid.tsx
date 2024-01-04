@@ -3,10 +3,10 @@ import { VscDebugStart } from "react-icons/vsc";
 import { FaHospital, FaUserInjured } from "react-icons/fa";
 import "./Grid.css";
 import { Card, CardContent } from "./ui/card";
-import { useSelectedAlgo } from "@/hooks/AlgoProvider";
+import { useAlgo } from "@/hooks/AlgoProvider";
 
 const Grid = () => {
-  const { isRunning } = useSelectedAlgo();
+  const { isRunning } = useAlgo();
   const [isMoving, setIsMoving] = useState(false);
   const tableData = Array.from({ length: 25 }, () => Array(25).fill(""));
   const [isMouseDown, setIsMouseDown] = useState(false);

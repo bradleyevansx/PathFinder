@@ -9,12 +9,21 @@ export enum Algo {
   Swarm = "Swarm",
 }
 
+export enum Speed {
+  VeryFast = "VeryFast",
+  Fast = "Fast",
+  Average = "Average",
+  Slow = "Slow",
+}
+
 type AlgoProviderProps = {
   children: React.ReactNode;
   defaultAlgo?: Algo;
 };
 
 type AlgoProviderState = {
+  speed: Speed;
+  setSpeed: (speed: Speed) => void;
   runAlgo: () => void;
   isRunning: boolean;
   setIsRunning: (isRunning: boolean) => void;
@@ -23,6 +32,8 @@ type AlgoProviderState = {
 };
 
 const initialState: AlgoProviderState = {
+  speed: Speed.Fast,
+  setSpeed: () => null,
   runAlgo: () => null,
   isRunning: false,
   setIsRunning: () => null,
@@ -38,13 +49,15 @@ export function AlgoProvider({
   ...props
 }: AlgoProviderProps) {
   const [isRunning, setIsRunning] = useState(false);
+  const [speed, setSpeed] = useState<Speed>(Speed.Fast);
   const [algo, setAlgo] = useState<Algo>(Algo.DepthFirstSearch);
 
   const value = {
+    speed,
+    setSpeed,
     runAlgo: async () => {
       setIsRunning(true);
-      await search(algo);
-      setIsRunning(false);
+      await search(algo, speed, setIsRunning);
     },
     isRunning,
     setIsRunning,
@@ -61,7 +74,7 @@ export function AlgoProvider({
   );
 }
 
-export const useSelectedAlgo = () => {
+export const useAlgo = () => {
   const context = useContext(AlgoProviderContext);
 
   if (context === undefined)
@@ -69,7 +82,7 @@ export const useSelectedAlgo = () => {
 
   return context;
 };
-async function search(algo: Algo) {
+async function search(algo: Algo, speed: Speed, setIsRunning: Function) {
   const startPoi = document.getElementById("start")?.parentElement?.id;
   const endPoi = document.getElementById("end")?.parentElement?.id;
   let selectedAlgo;
@@ -93,6 +106,20 @@ async function search(algo: Algo) {
     //   selectedAlgo = swarm;
     //   break;
   }
+  let selectedSpeed;
+  switch (speed) {
+    case Speed.VeryFast:
+      selectedSpeed = 0;
+      break;
+    case Speed.Fast:
+      selectedSpeed = 10;
+      break;
+    case Speed.Average:
+      selectedSpeed = 15;
+      break;
+    case Speed.Slow:
+      selectedSpeed = 20;
+  }
 
   const [startC, startR] = startPoi!.split("-");
   let path1: string[] = [];
@@ -105,14 +132,16 @@ async function search(algo: Algo) {
       parseInt(startR),
       [],
       isInjuredOnBoard()!,
-      "visited"
+      "visited",
+      selectedSpeed
     );
     path2 = await selectedAlgo(
       parseInt(injuredC),
       parseInt(injuredR),
       [],
       endPoi!,
-      "visited2"
+      "visited2",
+      selectedSpeed
     );
   } else {
     path1 = await selectedAlgo(
@@ -120,13 +149,15 @@ async function search(algo: Algo) {
       parseInt(startR),
       [],
       endPoi!,
-      "visited"
+      "visited",
+      selectedSpeed
     );
   }
 
   const finalPath = isInjuredOnBoard() ? [...path1, ...path2] : path1;
 
-  showPath(finalPath);
+  await showPath(finalPath);
+  setIsRunning(false);
 }
 
 async function dfs(
@@ -134,7 +165,8 @@ async function dfs(
   r: number,
   path: string[] = [],
   endPoiCords: string,
-  visitedClass: string
+  visitedClass: string,
+  speed: number
 ): Promise<string[]> {
   if (
     c < 0 ||
@@ -152,7 +184,7 @@ async function dfs(
   if (`${c}-${r}` === endPoiCords) {
     return path;
   } else if (document.getElementById(`${c}-${r}`)?.children.length === 0) {
-    await new Promise((resolve) => setTimeout(resolve, 20));
+    await new Promise((resolve) => setTimeout(resolve, speed));
     document.getElementById(`${c}-${r}`)?.classList?.add(visitedClass);
   }
 
@@ -168,7 +200,8 @@ async function dfs(
       r + dr,
       [...path],
       endPoiCords,
-      visitedClass
+      visitedClass,
+      speed
     );
     if (newPath && newPath.length > 0) {
       return newPath;
@@ -190,7 +223,8 @@ async function bfs(
   r: number,
   path: string[] = [],
   endPoiCords: string,
-  visitedClass: string
+  visitedClass: string,
+  speed: number
 ): Promise<string[]> {
   path;
   const q: bfsNode[] = [];
@@ -212,7 +246,7 @@ async function bfs(
     if (`${c}-${r}` === endPoiCords) {
       return path;
     } else if (document.getElementById(`${c}-${r}`)?.children.length === 0) {
-      await new Promise((resolve) => setTimeout(resolve, 20));
+      await new Promise((resolve) => setTimeout(resolve, speed));
       document.getElementById(`${c}-${r}`)?.classList?.add(visitedClass);
     }
     const directions = [
@@ -236,7 +270,7 @@ async function showPath(path: string[]) {
     if (document.getElementById(node)?.children.length !== 0) {
       document.getElementById(node)?.classList?.add("poi");
     }
-    await new Promise((resolve) => setTimeout(resolve, 20));
+    await new Promise((resolve) => setTimeout(resolve, 15));
     document.getElementById(node)?.classList?.add("path");
   }
 }

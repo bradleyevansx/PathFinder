@@ -1,8 +1,8 @@
-import { useSelectedAlgo } from "@/hooks/AlgoProvider";
+import { useAlgo } from "@/hooks/AlgoProvider";
 import { Button } from "./ui/button";
 
 const ClearBoardButton = () => {
-  const { isRunning } = useSelectedAlgo();
+  const { isRunning } = useAlgo();
   const resetGrid = () => {
     const tdElements = document.querySelectorAll("td");
     tdElements.forEach((td) => {

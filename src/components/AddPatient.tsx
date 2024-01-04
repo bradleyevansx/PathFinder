@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { useSelectedAlgo } from "@/hooks/AlgoProvider";
+import { useAlgo } from "@/hooks/AlgoProvider";
 
 const AddPatient = () => {
-  const { isRunning } = useSelectedAlgo();
+  const { isRunning } = useAlgo();
   const [patientExists, setPatientExists] = useState(false);
 
   const handleAddPatient = () => {

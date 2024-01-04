@@ -49,11 +49,29 @@ const SideContainer = () => {
             <table className={`custom-table ${theme}`}>
               <tbody>
                 <tr>
-                  <td></td>
+                  <td className="visited"></td>
+                </tr>
+              </tbody>
+            </table>
+            <table className={`custom-table ${theme}`}>
+              <tbody>
+                <tr>
+                  <td className="visited2"></td>
                 </tr>
               </tbody>
             </table>
             <p className="font-semibold text-xl">Visited Node</p>
+          </li>
+          <li className="flex items-center space-x-2">
+            <table className={`custom-table ${theme}`}>
+              <tbody>
+                <tr>
+                  <td className="path"></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p className="font-semibold text-xl">Path Node</p>
           </li>
           <li className="flex items-center space-x-2">
             <ClearBoardButton></ClearBoardButton>

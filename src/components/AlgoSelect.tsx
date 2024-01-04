@@ -7,10 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Algo, useSelectedAlgo } from "@/hooks/AlgoProvider";
+import { Algo, useAlgo } from "@/hooks/AlgoProvider";
 
 const AlgoSelect = () => {
-  const { algo, setAlgo, isRunning } = useSelectedAlgo();
+  const { algo, setAlgo, isRunning } = useAlgo();
   const handleChange = (value: string) => {
     setAlgo(Algo[value as keyof typeof Algo]);
   };
