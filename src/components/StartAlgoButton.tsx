@@ -1,4 +1,4 @@
-import { Algo, useSelectedAlgo } from "@/hooks/AlgoProvider";
+import { useSelectedAlgo } from "@/hooks/AlgoProvider";
 import { Button } from "./ui/button";
 
 const StartAlgoButton = () => {

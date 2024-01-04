@@ -192,6 +192,7 @@ async function bfs(
   endPoiCords: string,
   visitedClass: string
 ): Promise<string[]> {
+  path;
   const q: bfsNode[] = [];
   q.push({ cords: [c, r], path: [`${c}-${r}`] });
 

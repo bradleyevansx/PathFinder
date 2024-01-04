@@ -1,4 +1,3 @@
-import AddPatient from "./AddPatient";
 import AlgoOptions from "./AlgoOptions";
 import ColorModeSwitch from "./ColorModeSwitch";
 
