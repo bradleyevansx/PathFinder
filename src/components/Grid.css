@@ -1,0 +1,154 @@
+#root {
+  background: var(--background);
+  height: 100dvh;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+td {
+  width: 12px;
+  height: 12px;
+  text-align: center;
+}
+@media screen and (min-width: 400px) {
+  td {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.light td {
+  border: 1px solid #202020;
+}
+
+.dark td {
+  border: 1px solid #d3d3d3;
+}
+
+.light td.wall {
+  text-align: center;
+  background-color: #6790ff;
+  animation: wallInAnimation 0.5s ease-in-out;
+}
+.dark td.wall {
+  text-align: center;
+  background-color: #6790ff;
+  animation: wallInAnimation 0.5s ease-in-out;
+}
+
+.light td.visited {
+  text-align: center;
+  background-color: #fdfd96;
+  animation: visitedAnimation 0.5s ease-in-out;
+}
+
+.dark td.visited {
+  text-align: center;
+  background-color: #fdfd96;
+  animation: visitedAnimation 0.5s ease-in-out;
+}
+
+.light td.visited2 {
+  text-align: center;
+  background-color: #ffb347;
+  animation: visited2Animation 0.5s ease-in-out;
+}
+
+.dark td.visited2 {
+  text-align: center;
+  background-color: #ffb347;
+  animation: visited2Animation 0.5s ease-in-out;
+}
+
+.light td.path {
+  text-align: center;
+  background-color: #6fc276;
+  animation: pathAnimation 0.5s ease-in-out;
+}
+
+.dark td.path {
+  text-align: center;
+  background-color: #6fc276;
+  animation: pathAnimation 0.5s ease-in-out;
+}
+.light td.poi {
+  text-align: center;
+  background: linear-gradient(
+    90deg,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    indigo,
+    violet
+  );
+  animation: poiAnimation 0.5s ease-in-out;
+}
+
+.dark td.poi {
+  text-align: center;
+  background: linear-gradient(90deg, blue, indigo, violet);
+  animation: poiAnimation 0.5s ease-in-out;
+}
+
+@keyframes poiAnimation {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background: linear-gradient(90deg, blue, indigo, violet);
+  }
+  100% {
+    background: linear-gradient(90deg, blue, indigo, violet);
+  }
+}
+@keyframes visited2Animation {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #ffb347;
+  }
+  100% {
+    background-color: #ffb347;
+  }
+}
+
+@keyframes pathAnimation {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #6fc276;
+  }
+  100% {
+    background-color: #6fc276;
+  }
+}
+
+@keyframes visitedAnimation {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #fdfd96;
+  }
+  100% {
+    background-color: #fdfd96;
+  }
+}
+
+@keyframes wallInAnimation {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: #6790ff;
+  }
+  100% {
+    background-color: #6790ff;
+  }
+}
