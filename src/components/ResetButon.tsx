@@ -1,7 +1,7 @@
 import { useAlgo } from "@/hooks/AlgoProvider";
 import { Button } from "./ui/button";
 
-const ClearBoardButton = () => {
+const ResetButton = () => {
   const { isRunning, initBoard: initPois } = useAlgo();
 
   return (
@@ -11,4 +11,4 @@ const ClearBoardButton = () => {
   );
 };
 
-export default ClearBoardButton;
+export default ResetButton;

@@ -1,5 +1,6 @@
 import AddPatient from "./AddPatient";
 import AlgoSelect from "./AlgoSelect";
+import ClearPathButton from "./ClearPathButton";
 import MazeSelect from "./MazeSelect";
 import SpeedSelect from "./SpeedSelect";
 
@@ -10,6 +11,7 @@ const AlgoOptions = () => {
       <MazeSelect></MazeSelect>
       <AlgoSelect></AlgoSelect>
       <SpeedSelect></SpeedSelect>
+      <ClearPathButton></ClearPathButton>
     </div>
   );
 };

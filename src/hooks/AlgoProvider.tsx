@@ -22,6 +22,7 @@ type AlgoProviderProps = {
 };
 
 type AlgoProviderState = {
+  clearPath: () => void;
   removeWalls: () => void;
   boardIsFresh: boolean;
   initBoard: () => void;
@@ -35,6 +36,7 @@ type AlgoProviderState = {
 };
 
 const initialState: AlgoProviderState = {
+  clearPath: () => null,
   removeWalls: () => null,
   boardIsFresh: true,
   initBoard: () => null,
@@ -67,6 +69,18 @@ export function AlgoProvider({
       }
     });
   };
+  const clearPath = () => {
+    const classes = ["visited", "visited2", "path", "path2"];
+    classes.forEach((className) => {
+      const elements = Array.from(document.getElementsByClassName(className));
+      for (let i = 0; i < elements.length; i++) {
+        if (elements[i].classList.contains("aside-cell")) {
+          continue;
+        }
+        elements[i].className = "";
+      }
+    });
+  };
   const initializeBoard = () => {
     removeWalls();
     const tdElement = document.querySelector(
@@ -91,6 +105,10 @@ export function AlgoProvider({
   }, []);
 
   const value = {
+    clearPath: () => {
+      clearPath();
+      setBoardIsFresh(true);
+    },
     removeWalls,
     boardIsFresh,
     initBoard: () => initializeBoard(),
@@ -98,7 +116,8 @@ export function AlgoProvider({
     setSpeed,
     runAlgo: async () => {
       setIsRunning(true);
-      await search(algo, speed, setIsRunning);
+      await search(algo, speed);
+      setIsRunning(false);
       setBoardIsFresh(false);
     },
     isRunning,
@@ -124,7 +143,7 @@ export const useAlgo = () => {
 
   return context;
 };
-async function search(algo: Algo, speed: Speed, setIsRunning: Function) {
+async function search(algo: Algo, speed: Speed) {
   const startPoi = document.getElementById("start")?.parentElement?.id;
   const endPoi = document.getElementById("end")?.parentElement?.id;
   let selectedAlgo;
@@ -199,7 +218,6 @@ async function search(algo: Algo, speed: Speed, setIsRunning: Function) {
   const finalPath = isInjuredOnBoard() ? [...path1, ...path2] : path1;
 
   await showPath(finalPath);
-  setIsRunning(false);
 }
 
 async function dfs(

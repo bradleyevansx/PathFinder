@@ -3,7 +3,7 @@ import StartAlgoButton from "./StartAlgoButton";
 import { VscDebugStart } from "react-icons/vsc";
 import { FaHospital, FaUserInjured } from "react-icons/fa";
 import { useTheme } from "../hooks/ThemeProvider";
-import ClearBoardButton from "./ClearBoardButton";
+import ResetButton from "./ResetButon";
 
 const SideContainer = () => {
   const { theme } = useTheme();
@@ -72,7 +72,7 @@ const SideContainer = () => {
             <p className="font-semibold text-xl">Path Node</p>
           </li>
           <li className="flex items-center space-x-2">
-            <ClearBoardButton></ClearBoardButton>
+            <ResetButton></ResetButton>
             <StartAlgoButton></StartAlgoButton>
           </li>
         </ul>
