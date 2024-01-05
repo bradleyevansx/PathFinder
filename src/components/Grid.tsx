@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { VscDebugStart } from "react-icons/vsc";
 import { FaHospital, FaUserInjured } from "react-icons/fa";
 import "./Grid.css";
