@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export enum Algo {
   DepthFirstSearch = "DepthFirstSearch",
@@ -22,6 +22,8 @@ type AlgoProviderProps = {
 };
 
 type AlgoProviderState = {
+  boardIsFresh: boolean;
+  initPois: () => void;
   speed: Speed;
   setSpeed: (speed: Speed) => void;
   runAlgo: () => void;
@@ -32,6 +34,8 @@ type AlgoProviderState = {
 };
 
 const initialState: AlgoProviderState = {
+  boardIsFresh: true,
+  initPois: () => null,
   speed: Speed.Fast,
   setSpeed: () => null,
   runAlgo: () => null,
@@ -48,16 +52,47 @@ export function AlgoProvider({
   defaultAlgo = Algo.DepthFirstSearch,
   ...props
 }: AlgoProviderProps) {
+  const [boardIsFresh, setBoardIsFresh] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [speed, setSpeed] = useState<Speed>(Speed.Fast);
   const [algo, setAlgo] = useState<Algo>(Algo.DepthFirstSearch);
+  const initializeBoard = () => {
+    const tdElements = document.querySelectorAll("td");
+    tdElements.forEach((td) => {
+      if (!td.classList.contains("aside-cell")) {
+        td.className = "";
+      }
+    });
+    const tdElement = document.querySelector(
+      `tr:nth-child(${20 + 1}) td:nth-child(${4 + 1})`
+    );
+    const tdElement2 = document.querySelector(
+      `tr:nth-child(${4 + 1}) td:nth-child(${20 + 1})`
+    );
+    var start = document.getElementById("start");
+    var end = document.getElementById("end");
+    var injured = document.getElementById("injured");
+    var poiContainer = document.getElementById("interest-container");
+    if (tdElement && tdElement2 && start && end && injured && poiContainer) {
+      tdElement.appendChild(start);
+      tdElement2.appendChild(end);
+      poiContainer.appendChild(injured);
+    }
+    setBoardIsFresh(true);
+  };
+  useEffect(() => {
+    initializeBoard();
+  }, []);
 
   const value = {
+    boardIsFresh,
+    initPois: () => initializeBoard(),
     speed,
     setSpeed,
     runAlgo: async () => {
       setIsRunning(true);
       await search(algo, speed, setIsRunning);
+      setBoardIsFresh(false);
     },
     isRunning,
     setIsRunning,
@@ -269,6 +304,10 @@ async function showPath(path: string[]) {
   for (let node of path) {
     if (document.getElementById(node)?.children.length !== 0) {
       document.getElementById(node)?.classList?.add("poi");
+    }
+    if (document.getElementById(node)?.classList?.contains("path")) {
+      document.getElementById(node)?.classList?.remove("path");
+      document.getElementById(node)?.classList?.add("path2");
     }
     await new Promise((resolve) => setTimeout(resolve, 15));
     document.getElementById(node)?.classList?.add("path");

@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useAlgo } from "@/hooks/AlgoProvider";
 
 const AddPatient = () => {
-  const { isRunning } = useAlgo();
+  const { isRunning, boardIsFresh } = useAlgo();
   const [patientExists, setPatientExists] = useState(false);
 
+  useEffect(() => {
+    if (boardIsFresh) {
+      setPatientExists(false);
+    }
+  }, [boardIsFresh]);
+
   const handleAddPatient = () => {
-    setPatientExists(true);
     const tdElements = document.querySelectorAll(
       "td:not(.start):not(.end):not(.wall)"
     );
@@ -20,23 +25,24 @@ const AddPatient = () => {
       injured.style.display = "flex";
       randomTd.appendChild(injured);
     }
+    setPatientExists(true);
   };
 
   const handleRemovePatient = () => {
-    setPatientExists(false);
     var injured = document.getElementById("injured");
     var poiContainer = document.getElementById("interest-container");
 
     if (injured && poiContainer) {
       poiContainer.appendChild(injured);
     }
+    setPatientExists(false);
   };
 
   return (
     <div>
       {patientExists ? (
         <Button
-          disabled={isRunning}
+          disabled={isRunning || !boardIsFresh}
           variant={"outline"}
           onClick={handleRemovePatient}
         >
@@ -44,7 +50,7 @@ const AddPatient = () => {
         </Button>
       ) : (
         <Button
-          disabled={isRunning}
+          disabled={isRunning || !boardIsFresh}
           variant={"outline"}
           onClick={handleAddPatient}
         >

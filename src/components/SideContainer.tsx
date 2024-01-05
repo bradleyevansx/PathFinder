@@ -27,9 +27,7 @@ const SideContainer = () => {
             <table className={`custom-table ${theme}`}>
               <tbody>
                 <tr>
-                  <td className="wall">
-                    <div></div>
-                  </td>
+                  <td className="aside-cell wall"></td>
                 </tr>
               </tbody>
             </table>
@@ -39,7 +37,7 @@ const SideContainer = () => {
             <table className={`custom-table ${theme}`}>
               <tbody>
                 <tr>
-                  <td></td>
+                  <td className="aside-cell"></td>
                 </tr>
               </tbody>
             </table>
@@ -49,14 +47,14 @@ const SideContainer = () => {
             <table className={`custom-table ${theme}`}>
               <tbody>
                 <tr>
-                  <td className="visited"></td>
+                  <td className="visited aside-cell"></td>
                 </tr>
               </tbody>
             </table>
             <table className={`custom-table ${theme}`}>
               <tbody>
                 <tr>
-                  <td className="visited2"></td>
+                  <td className="visited2 aside-cell"></td>
                 </tr>
               </tbody>
             </table>
@@ -66,7 +64,7 @@ const SideContainer = () => {
             <table className={`custom-table ${theme}`}>
               <tbody>
                 <tr>
-                  <td className="path"></td>
+                  <td className="path aside-cell"></td>
                 </tr>
               </tbody>
             </table>

@@ -2,15 +2,10 @@ import { useAlgo } from "@/hooks/AlgoProvider";
 import { Button } from "./ui/button";
 
 const ClearBoardButton = () => {
-  const { isRunning } = useAlgo();
-  const resetGrid = () => {
-    const tdElements = document.querySelectorAll("td");
-    tdElements.forEach((td) => {
-      td.className = "";
-    });
-  };
+  const { isRunning, initPois } = useAlgo();
+
   return (
-    <Button disabled={isRunning} onClick={resetGrid} variant={"outline"}>
+    <Button disabled={isRunning} onClick={initPois} variant={"outline"}>
       Clear
     </Button>
   );

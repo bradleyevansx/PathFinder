@@ -6,24 +6,24 @@ import { Card, CardContent } from "./ui/card";
 import { useAlgo } from "@/hooks/AlgoProvider";
 
 const Grid = () => {
-  const { isRunning } = useAlgo();
+  const { isRunning, boardIsFresh } = useAlgo();
   const [isMoving, setIsMoving] = useState(false);
   const tableData = Array.from({ length: 25 }, () => Array(25).fill(""));
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [currSpanId, setCurrSpanId] = useState("");
 
   const handleMouseDownInTable = () => {
-    if (isRunning) return;
+    if (isRunning || !boardIsFresh) return;
     setIsMouseDown(true);
   };
 
   const handleMouseUpInTable = () => {
-    if (isRunning) return;
+    if (isRunning || !boardIsFresh) return;
     setIsMouseDown(false);
   };
 
   const handleMouseOverCell = (rowIndex: number, cellIndex: number) => {
-    if (isRunning) return;
+    if (isRunning || !boardIsFresh) return;
     if (isMouseDown) {
       const tdElement = document.querySelector(
         `tr:nth-child(${rowIndex + 1}) td:nth-child(${cellIndex + 1})`
@@ -48,7 +48,7 @@ const Grid = () => {
     rowIndex: number,
     cellIndex: number
   ) => {
-    if (isRunning) return;
+    if (isRunning || !boardIsFresh) return;
     event.preventDefault();
     const tdElement = document.querySelector(
       `tr:nth-child(${rowIndex + 1}) td:nth-child(${cellIndex + 1})`
@@ -59,7 +59,7 @@ const Grid = () => {
   };
 
   const handleMouseDownPoi = (event: React.MouseEvent<HTMLSpanElement>) => {
-    if (isRunning) return;
+    if (isRunning || !boardIsFresh) return;
     const spanElement = event.currentTarget;
     const parent = spanElement.parentElement;
     const container = document.getElementById("interest-container");
@@ -76,7 +76,7 @@ const Grid = () => {
   const handleMouseLeavePoiOpaque = (
     event: React.MouseEvent<HTMLSpanElement>
   ) => {
-    if (isRunning) return;
+    if (isRunning || !boardIsFresh) return;
     const spanElement = event.currentTarget;
     const parent = spanElement.parentElement;
     const container = document.getElementById("interest-container");
@@ -86,7 +86,7 @@ const Grid = () => {
     }
   };
   const handleMouseUpPoiOpaque = () => {
-    if (isRunning) return;
+    if (isRunning || !boardIsFresh) return;
     if (isMoving) {
       const spanElementOpaque = document.getElementById(currSpanId);
       const tdElement = spanElementOpaque?.parentElement;
@@ -103,22 +103,6 @@ const Grid = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const tdElement = document.querySelector(
-      `tr:nth-child(${20 + 1}) td:nth-child(${4 + 1})`
-    );
-    const tdElement2 = document.querySelector(
-      `tr:nth-child(${4 + 1}) td:nth-child(${20 + 1})`
-    );
-    var start = document.getElementById("start");
-    var end = document.getElementById("end");
-
-    if (tdElement && tdElement2 && start && end) {
-      tdElement.appendChild(start);
-      tdElement2.appendChild(end);
-    }
-  }, []);
 
   return (
     <>
