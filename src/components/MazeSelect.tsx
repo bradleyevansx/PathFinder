@@ -36,11 +36,7 @@ const kruskalMaze = async () => {
     for (let col = 0; col < 25; col++) {
       const cell = document.getElementById(`${col}-${row}`);
 
-      if (
-        cell &&
-        !cell.classList.contains("wall") &&
-        cell.children.length === 0
-      ) {
+      if (cell && !cell.classList.contains("wall")) {
         cell.classList.add(`cell-${idCounter}`);
         idCounter++;
       }
@@ -97,9 +93,11 @@ const kruskalMaze = async () => {
       if (
         leftCell &&
         rightCell &&
+        leftCell.classList &&
+        rightCell.classList &&
         leftCell?.classList[0] !== rightCell?.classList[0]
       ) {
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 25));
         (cell as HTMLElement).classList.remove("wall");
         const needsUpdatedClass = Array.from(
           document.getElementsByClassName(leftCell.classList[0])
@@ -107,10 +105,12 @@ const kruskalMaze = async () => {
 
         for (let needsUpdate of needsUpdatedClass) {
           const curr = needsUpdate as HTMLElement;
+          console.log("Before", curr);
           for (let i = curr.classList.length - 1; i >= 0; i--) {
             curr.classList.remove(curr.classList[i]);
           }
           curr.classList.add(rightCell.classList[0]);
+          console.log("After", curr);
         }
       }
     } else {
@@ -119,9 +119,11 @@ const kruskalMaze = async () => {
       if (
         topCell &&
         bottomCell &&
+        topCell.classList &&
+        bottomCell.classList &&
         topCell?.classList[0] !== bottomCell?.classList[0]
       ) {
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 25));
         (cell as HTMLElement).classList.remove("wall");
         const needsUpdatedClass = Array.from(
           document.getElementsByClassName(topCell.classList[0])
@@ -129,11 +131,30 @@ const kruskalMaze = async () => {
 
         for (let needsUpdate of needsUpdatedClass) {
           const curr = needsUpdate as HTMLElement;
+          console.log("Before", curr);
           for (let i = curr.classList.length - 1; i >= 0; i--) {
             curr.classList.remove(curr.classList[i]);
           }
           curr.classList.add(bottomCell.classList[0]);
+          console.log("After", curr);
         }
+      }
+    }
+  }
+  const pois = ["injured", "start", "end"];
+  for (let poi of pois) {
+    const poiElement = document.getElementById(poi);
+    if (poiElement) {
+      const cords = poiElement.parentElement?.id.split("-");
+      if (!cords) continue;
+      const col = parseInt(cords[0]);
+      const row = parseInt(cords[1]);
+
+      if (col % 2 !== 0 && row % 2 !== 0) {
+        document.getElementById(`${col - 1}-${row}`)?.classList.remove("wall");
+        document.getElementById(`${col + 1}-${row}`)?.classList.remove("wall");
+        document.getElementById(`${col}-${row - 1}`)?.classList.remove("wall");
+        document.getElementById(`${col}-${row + 1}`)?.classList.remove("wall");
       }
     }
   }
