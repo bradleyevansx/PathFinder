@@ -2,10 +2,10 @@ import { useAlgo } from "@/hooks/AlgoProvider";
 import { Button } from "./ui/button";
 
 const StartAlgoButton = () => {
-  const { isRunning, runAlgo } = useAlgo();
+  const { isRunning, runAlgo, boardIsFresh } = useAlgo();
 
   return (
-    <Button disabled={isRunning} onClick={runAlgo}>
+    <Button disabled={isRunning || !boardIsFresh} onClick={runAlgo}>
       Start
     </Button>
   );

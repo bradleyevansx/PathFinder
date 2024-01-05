@@ -22,8 +22,9 @@ type AlgoProviderProps = {
 };
 
 type AlgoProviderState = {
+  removeWalls: () => void;
   boardIsFresh: boolean;
-  initPois: () => void;
+  initBoard: () => void;
   speed: Speed;
   setSpeed: (speed: Speed) => void;
   runAlgo: () => void;
@@ -34,8 +35,9 @@ type AlgoProviderState = {
 };
 
 const initialState: AlgoProviderState = {
+  removeWalls: () => null,
   boardIsFresh: true,
-  initPois: () => null,
+  initBoard: () => null,
   speed: Speed.Fast,
   setSpeed: () => null,
   runAlgo: () => null,
@@ -56,13 +58,17 @@ export function AlgoProvider({
   const [isRunning, setIsRunning] = useState(false);
   const [speed, setSpeed] = useState<Speed>(Speed.Fast);
   const [algo, setAlgo] = useState<Algo>(Algo.DepthFirstSearch);
-  const initializeBoard = () => {
+
+  const removeWalls = () => {
     const tdElements = document.querySelectorAll("td");
     tdElements.forEach((td) => {
       if (!td.classList.contains("aside-cell")) {
         td.className = "";
       }
     });
+  };
+  const initializeBoard = () => {
+    removeWalls();
     const tdElement = document.querySelector(
       `tr:nth-child(${20 + 1}) td:nth-child(${4 + 1})`
     );
@@ -85,8 +91,9 @@ export function AlgoProvider({
   }, []);
 
   const value = {
+    removeWalls,
     boardIsFresh,
-    initPois: () => initializeBoard(),
+    initBoard: () => initializeBoard(),
     speed,
     setSpeed,
     runAlgo: async () => {
