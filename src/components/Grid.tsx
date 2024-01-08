@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VscDebugStart } from "react-icons/vsc";
 import { FaHospital, FaUserInjured } from "react-icons/fa";
 import "./Grid.css";
@@ -7,11 +7,32 @@ import { useAlgo } from "@/hooks/AlgoProvider";
 
 const Grid = () => {
   const { isRunning, boardIsFresh } = useAlgo();
+  const [isWKeyPressed, setIsWKeyPressed] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
   const tableData = Array.from({ length: 25 }, () => Array(25).fill(""));
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [currSpanId, setCurrSpanId] = useState("");
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "w") {
+        setIsWKeyPressed(true);
+      }
+    };
 
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (event.key === "w") {
+        setIsWKeyPressed(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
   const handleMouseDownInTable = () => {
     if (isRunning || !boardIsFresh) return;
     setIsMouseDown(true);
@@ -29,7 +50,11 @@ const Grid = () => {
         `tr:nth-child(${rowIndex + 1}) td:nth-child(${cellIndex + 1})`
       );
       if (tdElement && !tdElement.querySelector("span")) {
-        tdElement.classList.toggle("wall");
+        if (isWKeyPressed) {
+          tdElement.classList.toggle("weight");
+        } else {
+          tdElement.classList.toggle("wall");
+        }
       }
     }
     if (isMoving) {
@@ -53,8 +78,13 @@ const Grid = () => {
     const tdElement = document.querySelector(
       `tr:nth-child(${rowIndex + 1}) td:nth-child(${cellIndex + 1})`
     );
-    if (tdElement && !tdElement.querySelector("span")) {
-      tdElement.classList.toggle("wall");
+    if (tdElement?.querySelector("span")) return;
+    if (tdElement) {
+      if (isWKeyPressed) {
+        tdElement.classList.toggle("weight");
+      } else {
+        tdElement.classList.toggle("wall");
+      }
     }
   };
 

@@ -1,5 +1,5 @@
+import { MinHeap } from "@/code/minHeap";
 import { createContext, useContext, useEffect, useState } from "react";
-
 export enum Algo {
   DepthFirstSearch = "DepthFirstSearch",
   BreadthFirstSearch = "BreadthFirstSearch",
@@ -154,9 +154,9 @@ async function search(algo: Algo, speed: Speed) {
     case Algo.BreadthFirstSearch:
       selectedAlgo = bfs;
       break;
-    // case Algo.Dijkstra:
-    //   selectedAlgo = dijkstra;
-    //   break;
+    case Algo.Dijkstra:
+      selectedAlgo = dijkstra;
+      break;
     // case Algo.AStar:
     //   selectedAlgo = aStar;
     //   break;
@@ -325,6 +325,52 @@ async function bfs(
 
   return [];
 }
+
+async function dijkstra(
+  c: number,
+  r: number,
+  path: string[] = [],
+  endPoiCords: string,
+  visitedClass: string,
+  speed: number
+): Promise<string[]> {
+  path = path;
+  const adjList = generateAdjencencyList();
+  const q = new MinHeap();
+  q.push([0, `${c}-${r}`]);
+  const visited = new Set();
+  const prev = new Map();
+  const distances = new Map();
+  const startNode = `${c}-${r}`;
+  prev.set(startNode, null);
+  distances.set(startNode, 0);
+  while (!q.isEmpty()) {
+    const [weight, node] = q.pop()!;
+    if (visited.has(node)) continue;
+    visited.add(node);
+    if (node === endPoiCords) {
+      const path = [];
+      let curr = node;
+      while (curr !== null) {
+        path.push(curr);
+        curr = prev.get(curr);
+      }
+      return path.reverse();
+    }
+    await new Promise((resolve) => setTimeout(resolve, speed));
+    document.getElementById(node)?.classList?.add(visitedClass);
+    for (let neighbor of adjList.get(node)?.neighbors!) {
+      if (visited.has(neighbor)) continue;
+      const newWeight = weight + adjList.get(neighbor)?.weight!;
+      if (!distances.has(neighbor) || newWeight < distances.get(neighbor)) {
+        distances.set(neighbor, newWeight);
+        prev.set(neighbor, node);
+        q.push([newWeight, neighbor]);
+      }
+    }
+  }
+  return [];
+}
 async function showPath(path: string[]) {
   for (let node of path) {
     if (document.getElementById(node)?.children.length !== 0) {
@@ -345,4 +391,37 @@ function isInjuredOnBoard() {
     return document.getElementById("injured")?.parentElement?.id;
   }
   return "";
+}
+
+export function generateAdjencencyList() {
+  const adjList = new Map();
+  for (let i = 0; i < 25; i++) {
+    for (let j = 0; j < 25; j++) {
+      const tdElement = document.querySelector(
+        `tr:nth-child(${i + 1}) td:nth-child(${j + 1})`
+      );
+      if (tdElement?.classList.contains("wall")) continue;
+      const weight = tdElement?.classList.contains("weight") ? 15 : 0;
+      const neighbors = [];
+      const directions = [
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1],
+      ];
+      for (let [dr, dc] of directions) {
+        if (i + dr < 0 || i + dr >= 25 || j + dc < 0 || j + dc >= 25) continue;
+        const neighbor = document.querySelector(
+          `tr:nth-child(${i + 1 + dr}) td:nth-child(${j + 1 + dc})`
+        );
+        if (neighbor?.classList.contains("wall")) continue;
+        neighbors.push(`${i + dr}-${j + dc}`);
+      }
+      adjList.set(`${i}-${j}`, {
+        weight: weight,
+        neighbors: neighbors,
+      });
+    }
+  }
+  return adjList;
 }

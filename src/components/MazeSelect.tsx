@@ -1,5 +1,11 @@
 import { useAlgo } from "@/hooks/AlgoProvider";
 import { Button } from "./ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 const MazeSelect = () => {
   const { removeWalls, setIsRunning, boardIsFresh, isRunning } = useAlgo();
@@ -11,9 +17,20 @@ const MazeSelect = () => {
     setIsRunning(false);
   };
   return (
-    <Button disabled={isRunning || !boardIsFresh} onClick={handleMaze}>
-      Maze
-    </Button>
+    <TooltipProvider delayDuration={10}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button disabled={isRunning || !boardIsFresh} onClick={handleMaze}>
+            Maze
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>
+            This generates a maze using Kruskal's maze generation algorithm.
+          </p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 

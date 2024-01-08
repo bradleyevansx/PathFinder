@@ -30,10 +30,18 @@ const AlgoSelect = () => {
           <SelectItem value="BreadthFirstSearch">
             Breadth First Search
           </SelectItem>
-          <SelectItem value="Dijkstra">Dijkstra</SelectItem>
-          <SelectItem value="AStar">A*</SelectItem>
-          <SelectItem value="Greedy">Greedy</SelectItem>
-          <SelectItem value="Swarm">Swarm</SelectItem>
+          <SelectItem disabled={true} value="Dijkstra">
+            Dijkstra - Coming Soon
+          </SelectItem>
+          <SelectItem disabled={true} value="AStar">
+            A* - Coming Soon
+          </SelectItem>
+          <SelectItem disabled={true} value="Greedy">
+            Greedy - Coming Soon
+          </SelectItem>
+          <SelectItem disabled={true} value="Swarm">
+            Swarm - Coming Soon
+          </SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
