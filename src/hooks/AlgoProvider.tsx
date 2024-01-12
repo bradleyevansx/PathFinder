@@ -201,7 +201,7 @@ export function AlgoProvider({
 
     setAlgoStats({
       length: finalPath.length,
-      duration: end,
+      duration: start - end,
       algo: algo,
       isSuccess: finalPath.length > 0 ? true : false,
     });
@@ -364,6 +364,7 @@ async function dijkstra(
   visitedClass: string,
   speed: number
 ): Promise<string[]> {
+  path;
   const adjList = generateAdjencencyList();
   const startNode = `${c}-${r}`;
   const q = new MinHeap();
