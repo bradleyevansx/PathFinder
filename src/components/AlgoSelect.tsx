@@ -30,9 +30,7 @@ const AlgoSelect = () => {
           <SelectItem value="BreadthFirstSearch">
             Breadth First Search
           </SelectItem>
-          <SelectItem disabled={true} value="Dijkstra">
-            Dijkstra - Coming Soon
-          </SelectItem>
+          <SelectItem value="Dijkstra">Dijkstra</SelectItem>
           <SelectItem disabled={true} value="AStar">
             A* - Coming Soon
           </SelectItem>

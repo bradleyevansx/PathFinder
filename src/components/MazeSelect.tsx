@@ -122,12 +122,10 @@ const kruskalMaze = async () => {
 
         for (let needsUpdate of needsUpdatedClass) {
           const curr = needsUpdate as HTMLElement;
-          console.log("Before", curr);
           for (let i = curr.classList.length - 1; i >= 0; i--) {
             curr.classList.remove(curr.classList[i]);
           }
           curr.classList.add(rightCell.classList[0]);
-          console.log("After", curr);
         }
       }
     } else {
@@ -148,12 +146,11 @@ const kruskalMaze = async () => {
 
         for (let needsUpdate of needsUpdatedClass) {
           const curr = needsUpdate as HTMLElement;
-          console.log("Before", curr);
+          
           for (let i = curr.classList.length - 1; i >= 0; i--) {
             curr.classList.remove(curr.classList[i]);
           }
           curr.classList.add(bottomCell.classList[0]);
-          console.log("After", curr);
         }
       }
     }

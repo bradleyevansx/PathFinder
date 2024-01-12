@@ -21,6 +21,13 @@ type AlgoProviderProps = {
   defaultAlgo?: Algo;
 };
 
+interface AlgoStats {
+  length: number;
+  duration: number;
+  algo: Algo;
+  isSuccess: boolean;
+}
+
 type AlgoProviderState = {
   clearPath: () => void;
   removeWalls: () => void;
@@ -33,9 +40,11 @@ type AlgoProviderState = {
   setIsRunning: (isRunning: boolean) => void;
   algo: Algo;
   setAlgo: (algo: Algo) => void;
+  algoStats: AlgoStats | null;
 };
 
 const initialState: AlgoProviderState = {
+  algoStats: null,
   clearPath: () => null,
   removeWalls: () => null,
   boardIsFresh: true,
@@ -56,6 +65,7 @@ export function AlgoProvider({
   defaultAlgo = Algo.DepthFirstSearch,
   ...props
 }: AlgoProviderProps) {
+  const [algoStats, setAlgoStats] = useState<AlgoStats | null>(null);
   const [boardIsFresh, setBoardIsFresh] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [speed, setSpeed] = useState<Speed>(Speed.Fast);
@@ -74,10 +84,14 @@ export function AlgoProvider({
     classes.forEach((className) => {
       const elements = Array.from(document.getElementsByClassName(className));
       for (let i = 0; i < elements.length; i++) {
+        let weight = false;
+        if (elements[i].classList.contains("weight")) {
+          weight = true;
+        }
         if (elements[i].classList.contains("aside-cell")) {
           continue;
         }
-        elements[i].className = "";
+        elements[i].className = weight ? "weight" : "";
       }
     });
   };
@@ -98,13 +112,105 @@ export function AlgoProvider({
       tdElement2.appendChild(end);
       poiContainer.appendChild(injured);
     }
+    setAlgoStats(null);
     setBoardIsFresh(true);
   };
   useEffect(() => {
     initializeBoard();
   }, []);
 
+  async function search(algo: Algo, speed: Speed) {
+    const startPoi = document.getElementById("start")?.parentElement?.id;
+    const endPoi = document.getElementById("end")?.parentElement?.id;
+    let selectedAlgo;
+    switch (algo) {
+      case Algo.DepthFirstSearch:
+        selectedAlgo = dfs;
+        break;
+      case Algo.BreadthFirstSearch:
+        selectedAlgo = bfs;
+        break;
+      case Algo.Dijkstra:
+        selectedAlgo = dijkstra;
+        break;
+      // case Algo.AStar:
+      //   selectedAlgo = aStar;
+      //   break;
+      // case Algo.Greedy:
+      //   selectedAlgo = greedy;
+      //   break;
+      // case Algo.Swarm:
+      //   selectedAlgo = swarm;
+      //   break;
+    }
+    let selectedSpeed;
+    switch (speed) {
+      case Speed.VeryFast:
+        selectedSpeed = 0;
+        break;
+      case Speed.Fast:
+        selectedSpeed = 10;
+        break;
+      case Speed.Average:
+        selectedSpeed = 15;
+        break;
+      case Speed.Slow:
+        selectedSpeed = 20;
+    }
+
+    const [startC, startR] = startPoi!.split("-");
+    let path1: string[] = [];
+    let path2: string[] = [];
+    if (!selectedAlgo) return;
+    const start = performance.now();
+    if (isInjuredOnBoard()) {
+      const [injuredC, injuredR] = isInjuredOnBoard()!.split("-");
+      path1 = await selectedAlgo(
+        parseInt(startC),
+        parseInt(startR),
+        [],
+        isInjuredOnBoard()!,
+        "visited",
+        selectedSpeed
+      );
+      if (path1.length > 0) {
+        path2 = await selectedAlgo(
+          parseInt(injuredC),
+          parseInt(injuredR),
+          [],
+          endPoi!,
+          "visited2",
+          selectedSpeed
+        );
+      } else {
+        path2 = [];
+      }
+    } else {
+      path1 = await selectedAlgo(
+        parseInt(startC),
+        parseInt(startR),
+        [],
+        endPoi!,
+        "visited",
+        selectedSpeed
+      );
+    }
+
+    const finalPath = isInjuredOnBoard() ? [...path1, ...path2] : path1;
+    const end = performance.now();
+
+    setAlgoStats({
+      length: finalPath.length,
+      duration: end,
+      algo: algo,
+      isSuccess: finalPath.length > 0 ? true : false,
+    });
+
+    await showPath(finalPath);
+  }
+
   const value = {
+    algoStats,
     clearPath: () => {
       clearPath();
       setBoardIsFresh(true);
@@ -143,82 +249,6 @@ export const useAlgo = () => {
 
   return context;
 };
-async function search(algo: Algo, speed: Speed) {
-  const startPoi = document.getElementById("start")?.parentElement?.id;
-  const endPoi = document.getElementById("end")?.parentElement?.id;
-  let selectedAlgo;
-  switch (algo) {
-    case Algo.DepthFirstSearch:
-      selectedAlgo = dfs;
-      break;
-    case Algo.BreadthFirstSearch:
-      selectedAlgo = bfs;
-      break;
-    case Algo.Dijkstra:
-      selectedAlgo = dijkstra;
-      break;
-    // case Algo.AStar:
-    //   selectedAlgo = aStar;
-    //   break;
-    // case Algo.Greedy:
-    //   selectedAlgo = greedy;
-    //   break;
-    // case Algo.Swarm:
-    //   selectedAlgo = swarm;
-    //   break;
-  }
-  let selectedSpeed;
-  switch (speed) {
-    case Speed.VeryFast:
-      selectedSpeed = 0;
-      break;
-    case Speed.Fast:
-      selectedSpeed = 10;
-      break;
-    case Speed.Average:
-      selectedSpeed = 15;
-      break;
-    case Speed.Slow:
-      selectedSpeed = 20;
-  }
-
-  const [startC, startR] = startPoi!.split("-");
-  let path1: string[] = [];
-  let path2: string[] = [];
-  if (!selectedAlgo) return;
-  if (isInjuredOnBoard()) {
-    const [injuredC, injuredR] = isInjuredOnBoard()!.split("-");
-    path1 = await selectedAlgo(
-      parseInt(startC),
-      parseInt(startR),
-      [],
-      isInjuredOnBoard()!,
-      "visited",
-      selectedSpeed
-    );
-    path2 = await selectedAlgo(
-      parseInt(injuredC),
-      parseInt(injuredR),
-      [],
-      endPoi!,
-      "visited2",
-      selectedSpeed
-    );
-  } else {
-    path1 = await selectedAlgo(
-      parseInt(startC),
-      parseInt(startR),
-      [],
-      endPoi!,
-      "visited",
-      selectedSpeed
-    );
-  }
-
-  const finalPath = isInjuredOnBoard() ? [...path1, ...path2] : path1;
-
-  await showPath(finalPath);
-}
 
 async function dfs(
   c: number,
@@ -329,47 +359,70 @@ async function bfs(
 async function dijkstra(
   c: number,
   r: number,
-  path: string[] = [],
+  path: [] = [],
   endPoiCords: string,
   visitedClass: string,
   speed: number
 ): Promise<string[]> {
-  path = path;
   const adjList = generateAdjencencyList();
-  const q = new MinHeap();
-  q.push([0, `${c}-${r}`]);
-  const visited = new Set();
-  const prev = new Map();
-  const distances = new Map();
   const startNode = `${c}-${r}`;
-  prev.set(startNode, null);
-  distances.set(startNode, 0);
+  const q = new MinHeap();
+  q.push([0, startNode]);
+  const visited = new Set();
+  const previous = new Map();
+
   while (!q.isEmpty()) {
-    const [weight, node] = q.pop()!;
-    if (visited.has(node)) continue;
-    visited.add(node);
-    if (node === endPoiCords) {
-      const path = [];
-      let curr = node;
-      while (curr !== null) {
-        path.push(curr);
-        curr = prev.get(curr);
-      }
-      return path.reverse();
+    const current = q.pop();
+    if (!current) {
+      continue;
     }
+    const [weight1, startNode1] = current;
+    if (startNode1 === endPoiCords) {
+      return reconstructPath(previous, startNode, endPoiCords);
+    }
+    if (visited.has(startNode1)) {
+      continue;
+    }
+
+    visited.add(startNode1);
+    const currentElement = document.getElementById(startNode1);
     await new Promise((resolve) => setTimeout(resolve, speed));
-    document.getElementById(node)?.classList?.add(visitedClass);
-    for (let neighbor of adjList.get(node)?.neighbors!) {
-      if (visited.has(neighbor)) continue;
-      const newWeight = weight + adjList.get(neighbor)?.weight!;
-      if (!distances.has(neighbor) || newWeight < distances.get(neighbor)) {
-        distances.set(neighbor, newWeight);
-        prev.set(neighbor, node);
-        q.push([newWeight, neighbor]);
-      }
+    if (startNode1 !== `${c}-${r}` && startNode1 !== endPoiCords) {
+      currentElement?.classList.add(visitedClass);
     }
+
+    const neighbors = adjList.get(startNode1);
+    neighbors?.map((neighbor) => {
+      const weight2 = neighbor[0];
+      const startNode2 = neighbor[1];
+      if (!visited.has(startNode2)) {
+        q.push([weight1 + weight2, startNode2]);
+
+        if (!previous.has(startNode2)) {
+          previous.set(startNode2, startNode1);
+        }
+      }
+    });
   }
+
   return [];
+}
+
+function reconstructPath(
+  previous: Map<string, string>,
+  start: string,
+  end: string
+): string[] {
+  const path = [];
+  let current = end;
+
+  while (current !== start) {
+    path.unshift(current);
+    current = previous.get(current) || "";
+  }
+
+  path.unshift(start);
+  return path;
 }
 async function showPath(path: string[]) {
   for (let node of path) {
@@ -393,7 +446,7 @@ function isInjuredOnBoard() {
   return "";
 }
 
-export function generateAdjencencyList() {
+export function generateAdjencencyList(): Map<string, []> {
   const adjList = new Map();
   for (let i = 0; i < 25; i++) {
     for (let j = 0; j < 25; j++) {
@@ -401,7 +454,6 @@ export function generateAdjencencyList() {
         `tr:nth-child(${i + 1}) td:nth-child(${j + 1})`
       );
       if (tdElement?.classList.contains("wall")) continue;
-      const weight = tdElement?.classList.contains("weight") ? 15 : 0;
       const neighbors = [];
       const directions = [
         [1, 0],
@@ -414,13 +466,11 @@ export function generateAdjencencyList() {
         const neighbor = document.querySelector(
           `tr:nth-child(${i + 1 + dr}) td:nth-child(${j + 1 + dc})`
         );
+        const weight = neighbor?.classList.contains("weight") ? 15 : 1;
         if (neighbor?.classList.contains("wall")) continue;
-        neighbors.push(`${i + dr}-${j + dc}`);
+        neighbors.push([weight, `${i + dr}-${j + dc}`]);
       }
-      adjList.set(`${i}-${j}`, {
-        weight: weight,
-        neighbors: neighbors,
-      });
+      adjList.set(`${i}-${j}`, neighbors);
     }
   }
   return adjList;

@@ -1,6 +1,7 @@
 import Grid from "./components/Grid";
 import Header from "./components/Header";
-import SideContainer from "./components/SideContainer";
+import LeftSideContainer from "./components/LeftSideContainer";
+import RightSideContainer from "./components/RightSideContainer";
 import { Card, CardContent, CardHeader } from "./components/ui/card";
 import { Algo, AlgoProvider } from "./hooks/AlgoProvider";
 import { ThemeProvider } from "./hooks/ThemeProvider";
@@ -23,8 +24,9 @@ function App() {
           <AlgoProvider defaultAlgo={Algo.DepthFirstSearch}>
             <Header></Header>
             <article className="w-fit h-fit mt-32 mx-auto flex items-center gap-6">
+              <LeftSideContainer></LeftSideContainer>
               <Grid></Grid>
-              <SideContainer></SideContainer>
+              <RightSideContainer></RightSideContainer>
             </article>
           </AlgoProvider>
         </ThemeProvider>

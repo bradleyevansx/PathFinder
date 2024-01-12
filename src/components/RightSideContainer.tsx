@@ -5,7 +5,7 @@ import { FaHospital, FaUserInjured } from "react-icons/fa";
 import { useTheme } from "../hooks/ThemeProvider";
 import ResetButton from "./ResetButon";
 
-const SideContainer = () => {
+const RightSideContainer = () => {
   const { theme } = useTheme();
   return (
     <Card className=" w-72 h-fit">
@@ -72,6 +72,17 @@ const SideContainer = () => {
             <p className="font-semibold text-xl">Path Node</p>
           </li>
           <li className="flex items-center space-x-2">
+            <table className={`custom-table ${theme}`}>
+              <tbody>
+                <tr>
+                  <td className="weight aside-cell"></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p className="font-semibold text-xl">Weight Node</p>
+          </li>
+          <li className="flex items-center space-x-2">
             <ResetButton></ResetButton>
             <StartAlgoButton></StartAlgoButton>
           </li>
@@ -81,4 +92,4 @@ const SideContainer = () => {
   );
 };
 
-export default SideContainer;
+export default RightSideContainer;

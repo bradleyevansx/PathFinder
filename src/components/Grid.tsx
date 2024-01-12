@@ -50,11 +50,7 @@ const Grid = () => {
         `tr:nth-child(${rowIndex + 1}) td:nth-child(${cellIndex + 1})`
       );
       if (tdElement && !tdElement.querySelector("span")) {
-        if (isWKeyPressed) {
-          tdElement.classList.toggle("weight");
-        } else {
-          tdElement.classList.toggle("wall");
-        }
+        handleToggleWallAndWeight(tdElement);
       }
     }
     if (isMoving) {
@@ -80,11 +76,38 @@ const Grid = () => {
     );
     if (tdElement?.querySelector("span")) return;
     if (tdElement) {
+      handleToggleWallAndWeight(tdElement);
+    }
+  };
+
+  const handleToggleWallAndWeight = (element: Element) => {
+    const isWall = element.classList.contains("wall");
+    const isWeight = element.classList.contains("weight");
+
+    if (isWall) {
       if (isWKeyPressed) {
-        tdElement.classList.toggle("weight");
+        element.classList.remove("wall");
+        element.classList.add("weight");
+        return;
       } else {
-        tdElement.classList.toggle("wall");
+        element.classList.remove("wall");
+        return;
       }
+    }
+    if (isWeight) {
+      if (isWKeyPressed) {
+        element.classList.remove("weight");
+        return;
+      } else {
+        element.classList.remove("weight");
+        element.classList.add("wall");
+        return;
+      }
+    }
+    if (isWKeyPressed) {
+      element.classList.add("weight");
+    } else {
+      element.classList.add("wall");
     }
   };
 

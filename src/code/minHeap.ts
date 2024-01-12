@@ -23,45 +23,47 @@ export class MinHeap {
 
   private siftUp(): void {
     let nodeIndex = this.heap.length - 1;
-    let parentIndex = this.getParentIndex(nodeIndex);
-    while (
-      nodeIndex > 0 &&
-      this.heap[nodeIndex][0] < this.heap[parentIndex][0]
-    ) {
-      this.swap(nodeIndex, parentIndex);
-      nodeIndex = parentIndex;
-      parentIndex = this.getParentIndex(nodeIndex);
+
+    while (nodeIndex > 0) {
+        const parentIndex = this.getParentIndex(nodeIndex);
+
+        if (this.heap[nodeIndex][0] < this.heap[parentIndex][0]) {
+            this.swap(nodeIndex, parentIndex);
+            nodeIndex = parentIndex;
+        } else {
+            break;
+        }
     }
-  }
+}
+
 
   private siftDown(): void {
     let nodeIndex = 0;
-    let leftChildIndex = this.getLeftChildIndex(nodeIndex);
-    let rightChildIndex = this.getRightChildIndex(nodeIndex);
-    let smallest = nodeIndex;
 
-    if (
-      leftChildIndex < this.heap.length &&
-      this.heap[leftChildIndex][0] < this.heap[smallest][0]
-    ) {
-      smallest = leftChildIndex;
-    }
+    while (true) {
+        let leftChildIndex = this.getLeftChildIndex(nodeIndex);
+        let rightChildIndex = this.getRightChildIndex(nodeIndex);
+        let smallest = nodeIndex;
 
-    if (
-      rightChildIndex < this.heap.length &&
-      this.heap[rightChildIndex][0] < this.heap[smallest][0]
-    ) {
-      smallest = rightChildIndex;
-    }
+        // Compare only the first element of the tuple
+        if (leftChildIndex < this.heap.length && this.heap[leftChildIndex][0] < this.heap[smallest][0]) {
+            smallest = leftChildIndex;
+        }
 
-    if (smallest !== nodeIndex) {
-      this.swap(smallest, nodeIndex);
-      nodeIndex = smallest;
-      leftChildIndex = this.getLeftChildIndex(nodeIndex);
-      rightChildIndex = this.getRightChildIndex(nodeIndex);
-      smallest = nodeIndex;
+        // Compare only the first element of the tuple
+        if (rightChildIndex < this.heap.length && this.heap[rightChildIndex][0] < this.heap[smallest][0]) {
+            smallest = rightChildIndex;
+        }
+
+        if (smallest !== nodeIndex) {
+            this.swap(smallest, nodeIndex);
+            nodeIndex = smallest;
+        } else {
+            break;  // Heap property is restored, no need to continue
+        }
     }
-  }
+}
+
 
   public push(node: [number, string]): void {
     this.heap.push(node);
