@@ -201,7 +201,7 @@ export function AlgoProvider({
 
     setAlgoStats({
       length: finalPath.length,
-      duration: start - end,
+      duration: end - start,
       algo: algo,
       isSuccess: finalPath.length > 0 ? true : false,
     });
