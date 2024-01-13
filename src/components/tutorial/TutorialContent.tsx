@@ -24,8 +24,7 @@ const TutorialContent = ({ pageNumber }: Props) => {
           <p className="text-xs mb-4">Select an algorithm from the dropdown:</p>
           <img
             className="w-2/4 mx-auto mb-4"
-            src="src/assets/tutorial/algoSelect.png"
-            alt="Algorithm Selection"
+            src="/src/assets/tutorial/algoSelect.png"
           />
           <p className="text-xs">
             Not all algorithms are created equally. Some algorithms guarantee
@@ -84,7 +83,7 @@ const TutorialContent = ({ pageNumber }: Props) => {
           <video
             loop={true}
             autoPlay={true}
-            src="src/assets/tutorial/wallsAndWeights.mp4"
+            src="/src/assets/tutorial/wallsAndWeights.mp4"
           ></video>
           <p className="text-xs">
             Move around points of interest by clicking and dragging
@@ -119,8 +118,7 @@ const TutorialContent = ({ pageNumber }: Props) => {
           </p>
           <img
             className="w-2/4 mx-auto mb-4"
-            src="src/assets/tutorial/addPatient.png"
-            alt="Algorithm Selection"
+            src="/src/assets/tutorial/addPatient.png"
           />
         </>
       );
@@ -132,9 +130,15 @@ const TutorialContent = ({ pageNumber }: Props) => {
             Clear Path and Speed Select!
           </p>
           <p>The code for this project can be found on my github.</p>
-          <Button variant={"outline"}>
-            <Github href="https://github.com/bradleyevansx/PathFinder.git"></Github>
-          </Button>
+          <a
+            className="w-full"
+            target="_blank"
+            href="https://github.com/bradleyevansx/PathFinder.git"
+          >
+            <Button className="w-full" variant={"outline"}>
+              <Github></Github>
+            </Button>
+          </a>
         </>
       );
     default:
