@@ -2,7 +2,7 @@ import { Github } from "lucide-react";
 import { Button } from "../ui/button";
 import algoSelect from "../../assets/tutorial/algoSelect.png";
 import addPatient from "../../assets/tutorial/addPatient.png";
-import wallsAndWeights from "../../assets/tutorial/WallsAndWeights.mp4";
+import wallsAndWeights from "../../assets/tutorial/wallsAndWeights.mp4";
 
 interface Props {
   pageNumber: number;
