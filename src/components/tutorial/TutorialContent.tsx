@@ -3,12 +3,20 @@ import { Button } from "../ui/button";
 import algoSelect from "../../assets/tutorial/algoSelect.png";
 import addPatient from "../../assets/tutorial/addPatient.png";
 import wallsAndWeights from "../../assets/tutorial/wallsAndWeights.mp4";
+import { useEffect } from "react";
 
 interface Props {
   pageNumber: number;
 }
 
 const TutorialContent = ({ pageNumber }: Props) => {
+  useEffect(() => {
+    const video = document.getElementById("tutorialVideo") as HTMLVideoElement;
+    if (video) {
+      video.load();
+    }
+  }, []);
+
   switch (pageNumber) {
     case 0:
       return (
@@ -25,7 +33,11 @@ const TutorialContent = ({ pageNumber }: Props) => {
       return (
         <>
           <p className="text-xs mb-4">Select an algorithm from the dropdown:</p>
-          <img className="w-2/4 mx-auto mb-4" src={algoSelect} />
+          <img
+            loading="eager"
+            className="w-2/4 mx-auto mb-4"
+            src={algoSelect}
+          />
           <p className="text-xs">
             Not all algorithms are created equally. Some algorithms guarantee
             the shortest path, while others do not. Some also take things like
@@ -81,6 +93,7 @@ const TutorialContent = ({ pageNumber }: Props) => {
       return (
         <>
           <video
+            id="tutorialVideo"
             loop={true}
             autoPlay={true}
             src={wallsAndWeights}
@@ -118,7 +131,11 @@ const TutorialContent = ({ pageNumber }: Props) => {
             Now the algorithm will find its way to the patient and then the
             hospital.
           </p>
-          <img className="w-2/4 mx-auto mb-4" src={addPatient} />
+          <img
+            loading="eager"
+            className="w-2/4 mx-auto mb-4"
+            src={addPatient}
+          />
         </>
       );
     case 5:
