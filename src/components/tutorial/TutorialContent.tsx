@@ -1,5 +1,8 @@
 import { Github } from "lucide-react";
 import { Button } from "../ui/button";
+import wallsAndWeights from "../../assets/tutorial/WallsAndWeights.mp4";
+import algoSelect from "../../assets/tutorial/algoSelect.png";
+import addPatient from "../../assets/tutorial/addPatient.png";
 
 interface Props {
   pageNumber: number;
@@ -22,10 +25,7 @@ const TutorialContent = ({ pageNumber }: Props) => {
       return (
         <>
           <p className="text-xs mb-4">Select an algorithm from the dropdown:</p>
-          <img
-            className="w-2/4 mx-auto mb-4"
-            src="/src/assets/tutorial/algoSelect.png"
-          />
+          <img className="w-2/4 mx-auto mb-4" src={algoSelect} />
           <p className="text-xs">
             Not all algorithms are created equally. Some algorithms guarantee
             the shortest path, while others do not. Some also take things like
@@ -80,11 +80,7 @@ const TutorialContent = ({ pageNumber }: Props) => {
     case 3:
       return (
         <>
-          <video
-            loop={true}
-            autoPlay={true}
-            src="/src/assets/tutorial/wallsAndWeights.mp4"
-          ></video>
+          <video loop={true} autoPlay={true} src={wallsAndWeights}></video>
           <p className="text-xs">
             Move around points of interest by clicking and dragging
           </p>
@@ -116,10 +112,7 @@ const TutorialContent = ({ pageNumber }: Props) => {
             Now the algorithm will find its way to the patient and then the
             hospital.
           </p>
-          <img
-            className="w-2/4 mx-auto mb-4"
-            src="/src/assets/tutorial/addPatient.png"
-          />
+          <img className="w-2/4 mx-auto mb-4" src={addPatient} />
         </>
       );
     case 5:
