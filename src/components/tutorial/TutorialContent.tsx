@@ -80,7 +80,13 @@ const TutorialContent = ({ pageNumber }: Props) => {
     case 3:
       return (
         <>
-          <video loop={true} autoPlay={true} src={wallsAndWeights}></video>
+          <video
+            loop={true}
+            autoPlay={true}
+            src={wallsAndWeights}
+            playsInline={true}
+            controls={false}
+          ></video>
           <p className="text-xs">
             Move around points of interest by clicking and dragging
           </p>
