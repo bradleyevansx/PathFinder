@@ -164,11 +164,11 @@ const Grid = () => {
           onMouseUp={handleMouseUpInTable}
           onMouseDown={handleMouseDownPoi}
           id="injured"
+          className={"w-[9px] h-[9px] md:h-[100%] md:w-[100%]"}
           style={{
             display: "flex",
             margin: "auto",
-            width: "100%",
-            height: "100%",
+
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -179,11 +179,11 @@ const Grid = () => {
           onMouseUp={handleMouseUpPoiOpaque}
           onMouseLeave={handleMouseLeavePoiOpaque}
           id="injured-opaque"
+          className={"w-[9px] h-[9px] md:h-[100%] md:w-[100%]"}
           style={{
             display: "flex",
             margin: "auto",
-            width: "100%",
-            height: "100%",
+
             justifyContent: "center",
             alignItems: "center",
             opacity: 0.5,
@@ -195,12 +195,12 @@ const Grid = () => {
           onMouseUp={handleMouseUpPoiOpaque}
           onMouseLeave={handleMouseLeavePoiOpaque}
           id="start-opaque"
+          className={"w-[9px] h-[9px] md:h-[100%] md:w-[100%]"}
           style={{
             opacity: ".5",
             display: "flex",
             margin: "auto",
-            width: "100%",
-            height: "100%",
+
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -210,12 +210,12 @@ const Grid = () => {
         <span
           onMouseUp={handleMouseUpInTable}
           onMouseDown={handleMouseDownPoi}
+          className={"w-[9px] h-[9px] md:h-[100%] md:w-[100%]"}
           id="start"
           style={{
             display: "flex",
             margin: "auto",
-            width: "100%",
-            height: "100%",
+
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -226,11 +226,11 @@ const Grid = () => {
           onMouseUp={handleMouseUpInTable}
           onMouseDown={handleMouseDownPoi}
           id="end"
+          className={"w-[9px] h-[9px] md:h-[100%] md:w-[100%]"}
           style={{
             display: "flex",
             margin: "auto",
-            width: "100%",
-            height: "100%",
+
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -241,12 +241,11 @@ const Grid = () => {
           onMouseUp={handleMouseUpPoiOpaque}
           onMouseLeave={handleMouseLeavePoiOpaque}
           id="end-opaque"
+          className={"w-[9px] h-[9px] md:h-[100%] md:w-[100%]"}
           style={{
             opacity: ".5",
             display: "flex",
             margin: "auto",
-            width: "100%",
-            height: "100%",
             justifyContent: "center",
             alignItems: "center",
           }}

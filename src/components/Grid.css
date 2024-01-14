@@ -1,6 +1,7 @@
 #root {
   background: var(--background);
   height: 100dvh;
+  overflow: hidden;
 }
 
 table {

@@ -1,14 +1,12 @@
 import { Card, CardContent } from "./ui/card";
-import StartAlgoButton from "./StartAlgoButton";
 import { VscDebugStart } from "react-icons/vsc";
 import { FaHospital, FaUserInjured } from "react-icons/fa";
 import { useTheme } from "../hooks/ThemeProvider";
-import ResetButton from "./ResetButon";
 
 const RightSideContainer = () => {
   const { theme } = useTheme();
   return (
-    <Card className=" w-72 h-fit">
+    <Card className="hidden md:flex w-72 h-fit">
       <CardContent className="mt-6 flex flex-col items-center">
         <ul className="flex flex-col items-center space-y-3">
           <li className="flex items-center space-x-2">
@@ -81,10 +79,6 @@ const RightSideContainer = () => {
             </table>
 
             <p className="font-semibold text-xl">Weight Node</p>
-          </li>
-          <li className="flex items-center space-x-2">
-            <ResetButton></ResetButton>
-            <StartAlgoButton></StartAlgoButton>
           </li>
         </ul>
       </CardContent>

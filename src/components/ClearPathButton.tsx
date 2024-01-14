@@ -5,7 +5,7 @@ const ClearPathButton = () => {
   const { isRunning, clearPath } = useAlgo();
 
   return (
-    <Button disabled={isRunning} onClick={clearPath}>
+    <Button variant={"outline"} disabled={isRunning} onClick={clearPath}>
       Clear Path
     </Button>
   );

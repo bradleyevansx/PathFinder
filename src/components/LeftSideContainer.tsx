@@ -23,7 +23,7 @@ const LeftSideContainer = () => {
     return message!;
   };
   return (
-    <div className="flex flex-col gap-4">
+    <div className="hidden md:flex flex-col gap-4 ">
       <Card className=" w-72 h-fit">
         <CardContent className="mt-6 flex flex-col items-center">
           <h3 className=" text-2xl border-b mb-2">Algorithm Details</h3>
@@ -41,7 +41,7 @@ const LeftSideContainer = () => {
                 <p>{`Time taken: ${algoStats.duration} ms`}</p>
               </>
             ) : (
-              <p className="text-red-500">No valid path found.</p>
+              <p className="text-red">No valid path found.</p>
             )}
           </CardContent>
         </Card>

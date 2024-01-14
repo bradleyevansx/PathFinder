@@ -1,14 +1,18 @@
 import { useAlgo } from "@/hooks/AlgoProvider";
 import { Button } from "./ui/button";
 
-const StartAlgoButton = () => {
+const StartButton = () => {
   const { isRunning, runAlgo, boardIsFresh } = useAlgo();
 
   return (
-    <Button disabled={isRunning || !boardIsFresh} onClick={runAlgo}>
+    <Button
+      variant={"outline"}
+      disabled={isRunning || !boardIsFresh}
+      onClick={runAlgo}
+    >
       Start
     </Button>
   );
 };
 
-export default StartAlgoButton;
+export default StartButton;

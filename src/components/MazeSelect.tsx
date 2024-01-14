@@ -10,22 +10,26 @@ import {
 const MazeSelect = () => {
   const { removeWalls, setIsRunning, boardIsFresh, isRunning } = useAlgo();
 
-  const handleMaze = () => {
-    setIsRunning(true);
+  const handleMaze = async () => {
+    await setIsRunning(true);
     removeWalls();
     kruskalMaze();
-    setIsRunning(false);
+    await setIsRunning(false);
   };
   return (
     <TooltipProvider delayDuration={10}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button disabled={isRunning || !boardIsFresh} onClick={handleMaze}>
+          <Button
+            variant={"outline"}
+            disabled={isRunning || !boardIsFresh}
+            onClick={handleMaze}
+          >
             Maze
           </Button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>
+          <p className="w-52">
             This generates a maze using Kruskal's maze generation algorithm.
           </p>
         </TooltipContent>
@@ -146,7 +150,7 @@ const kruskalMaze = async () => {
 
         for (let needsUpdate of needsUpdatedClass) {
           const curr = needsUpdate as HTMLElement;
-          
+
           for (let i = curr.classList.length - 1; i >= 0; i--) {
             curr.classList.remove(curr.classList[i]);
           }
