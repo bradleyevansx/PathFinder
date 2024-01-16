@@ -14,6 +14,7 @@ export enum Speed {
   Fast = "Fast",
   Average = "Average",
   Slow = "Slow",
+  VerySlow = "VerySlow",
 }
 
 type AlgoProviderProps = {
@@ -133,9 +134,9 @@ export function AlgoProvider({
       case Algo.Dijkstra:
         selectedAlgo = dijkstra;
         break;
-      // case Algo.AStar:
-      //   selectedAlgo = aStar;
-      //   break;
+      case Algo.AStar:
+        selectedAlgo = aStar;
+        break;
       // case Algo.Greedy:
       //   selectedAlgo = greedy;
       //   break;
@@ -156,6 +157,9 @@ export function AlgoProvider({
         break;
       case Speed.Slow:
         selectedSpeed = 20;
+        break;
+      case Speed.VerySlow:
+        selectedSpeed = 30;
     }
 
     const [startC, startR] = startPoi!.split("-");
@@ -424,6 +428,70 @@ function reconstructPath(
 
   path.unshift(start);
   return path;
+}
+
+async function aStar(
+  c: number,
+  r: number,
+  path: [] = [],
+  endPoiCords: string,
+  visitedClass: string,
+  speed: number
+): Promise<string[]> {
+  const adjList = generateAdjencencyList();
+  const startNode = `${c}-${r}`;
+  const q = new MinHeap();
+  q.push([0, startNode, 0]);
+  const visited = new Set();
+  const previous = new Map();
+
+  while (!q.isEmpty()) {
+    const current = q.pop();
+    if (!current) {
+      continue;
+    }
+    const [f, startNode1, g1] = current;
+    if (startNode1 === endPoiCords) {
+      return reconstructPath(previous, startNode, endPoiCords);
+    }
+    if (visited.has(startNode1)) {
+      continue;
+    }
+
+    visited.add(startNode1);
+    const currentElement = document.getElementById(startNode1);
+    await new Promise((resolve) => setTimeout(resolve, speed));
+    if (startNode1 !== `${c}-${r}` && startNode1 !== endPoiCords) {
+      currentElement?.classList.add(visitedClass);
+    }
+
+    const neighbors = adjList.get(startNode1);
+    neighbors?.forEach((neighbor) => {
+      const weight2 = neighbor[0];
+      const startNode2 = neighbor[1];
+      if (!visited.has(startNode2)) {
+        const h2 = getDistanceToEnd(startNode2, endPoiCords);
+        q.push([g1! + weight2 + h2, startNode2, g1! + weight2]);
+
+        if (!previous.has(startNode2)) {
+          previous.set(startNode2, startNode1);
+        }
+      }
+    });
+  }
+
+  return [];
+}
+
+function getDistanceToEnd(curr: string, end: string): number {
+  const [currX, currY] = curr.split("-").map(Number);
+  const [endX, endY] = end.split("-").map(Number);
+
+  const distance = Math.sqrt(
+    Math.pow(endX - currX, 2) + Math.pow(endY - currY, 2)
+  );
+
+  return distance;
 }
 async function showPath(path: string[]) {
   for (let node of path) {

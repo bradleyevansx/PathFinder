@@ -31,9 +31,7 @@ const AlgoSelect = () => {
             Breadth First Search
           </SelectItem>
           <SelectItem value="Dijkstra">Dijkstra</SelectItem>
-          <SelectItem disabled={true} value="AStar">
-            A* - Coming Soon
-          </SelectItem>
+          <SelectItem value="AStar">A*</SelectItem>
           <SelectItem disabled={true} value="Greedy">
             Greedy - Coming Soon
           </SelectItem>

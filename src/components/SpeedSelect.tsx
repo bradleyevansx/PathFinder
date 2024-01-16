@@ -30,6 +30,7 @@ const SpeedSelect = () => {
           <SelectItem value="Fast">Fast</SelectItem>
           <SelectItem value="Average">Average</SelectItem>
           <SelectItem value="Slow">Slow</SelectItem>
+          <SelectItem value="VerySlow">Very Slow</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
