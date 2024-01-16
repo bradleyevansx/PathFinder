@@ -438,6 +438,7 @@ async function aStar(
   visitedClass: string,
   speed: number
 ): Promise<string[]> {
+  path;
   const adjList = generateAdjencencyList();
   const startNode = `${c}-${r}`;
   const q = new MinHeap();
@@ -451,6 +452,7 @@ async function aStar(
       continue;
     }
     const [f, startNode1, g1] = current;
+    f;
     if (startNode1 === endPoiCords) {
       return reconstructPath(previous, startNode, endPoiCords);
     }
