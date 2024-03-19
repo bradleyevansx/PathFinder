@@ -19,6 +19,10 @@ const LeftSideContainer = () => {
         message =
           "BFS is a graph traversal algorithm that explores nodes level by level, visiting all neighbors before moving on to the next level. While BFS guarantees finding the shortest path in an unweighted graph, it may not do so in a weighted graph.";
         break;
+      case Algo.AStar:
+        message =
+          "A* is a heuristic search algorithm that combines the systematic exploration of paths with a heuristic function to guide its search towards the most promising nodes. Similar to DFS, it may not consider edge weights explicitly and may explore less promising paths before finding the optimal solution. However, A* is more efficient in finding optimal paths in graphs with weighted edges.";
+        break;
     }
     return message!;
   };

@@ -39,7 +39,7 @@ const RightSideContainer = () => {
                 </tr>
               </tbody>
             </table>
-            <p className="font-semibold text-xl">Univisited Node</p>
+            <p className="font-semibold text-xl">Unvisited Node</p>
           </li>
           <li className="flex items-center space-x-2">
             <table className={`custom-table ${theme}`}>
